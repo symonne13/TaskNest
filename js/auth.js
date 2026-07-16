@@ -1,6 +1,13 @@
-// ===============================
+// ======================================
+// TASKNEST AUTHENTICATION
+// ======================================
+
+const USERS_KEY = "tasknest_users";
+const CURRENT_USER_KEY = "loggedInUser";
+
+// ======================================
 // SIGN UP
-// ===============================
+// ======================================
 
 const signupForm = document.getElementById("signupForm");
 
@@ -16,58 +23,93 @@ if (signupForm) {
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
 
-        // Validation
+        // ======================
+        // VALIDATION
+        // ======================
+
         if (!name || !email || !phone || !password || !confirmPassword) {
+
             alert("Please fill in all fields.");
+
             return;
+
         }
 
-        // Kenyan phone number validation
+        // Kenyan phone number
+
         const phoneRegex = /^(07|01)\d{8}$/;
 
         if (!phoneRegex.test(phone)) {
-            alert("Enter a valid phone number.");
+
+            alert("Enter a valid Kenyan phone number.");
+
             return;
+
         }
 
-        // Password validation
+        // Password
+
         if (password.length < 6) {
+
             alert("Password must be at least 6 characters.");
+
             return;
+
         }
 
         if (password !== confirmPassword) {
+
             alert("Passwords do not match.");
+
             return;
+
         }
 
-        // Get users
-        let users = JSON.parse(localStorage.getItem("tasknest_users")) || [];
+        // ======================
+        // GET USERS
+        // ======================
 
-        // Check duplicate phone number
+        let users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+
+        // Check duplicate phone
+
         const exists = users.find(user => user.phone === phone);
 
         if (exists) {
+
             alert("An account with this phone number already exists.");
+
             return;
+
         }
 
-        // Save user
-        users.push({
+        // ======================
+        // CREATE USER
+        // ======================
 
-    id: crypto.randomUUID(),
+        const newUser = {
 
-    name,
+            id: crypto.randomUUID(),
 
-    email,
+            name,
 
-    phone,
+            email,
 
-    password
+            phone,
 
-});
+            password
 
-        localStorage.setItem("tasknest_users", JSON.stringify(users));
+        };
+
+        users.push(newUser);
+
+        localStorage.setItem(
+
+            USERS_KEY,
+
+            JSON.stringify(users)
+
+        );
 
         alert("🎉 Account created successfully!");
 
@@ -76,9 +118,10 @@ if (signupForm) {
     });
 
 }
-// ===============================
+
+// ======================================
 // LOGIN
-// ===============================
+// ======================================
 
 const loginForm = document.getElementById("loginForm");
 
@@ -91,11 +134,16 @@ if (loginForm) {
         const phone = document.getElementById("loginPhone").value.trim();
         const password = document.getElementById("loginPassword").value;
 
-        let users = JSON.parse(localStorage.getItem("tasknestUsers")) || [];
+        const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
 
-        const user = users.find(u =>
-            u.phone === phone &&
-            u.password === password
+        const user = users.find(
+
+            u =>
+
+                u.phone === phone &&
+
+                u.password === password
+
         );
 
         if (!user) {
@@ -107,8 +155,11 @@ if (loginForm) {
         }
 
         localStorage.setItem(
-            "loggedInUser",
+
+            CURRENT_USER_KEY,
+
             JSON.stringify(user)
+
         );
 
         window.location.href = "dashboard.html";
