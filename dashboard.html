@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskNest Dashboard</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/dashboard.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =======================
+         SIDEBAR
+    ======================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div>
+
+            <div class="logo">
+
+                <i class="fa-solid fa-list-check"></i>
+
+                <h2>TaskNest</h2>
+
+            </div>
+
+            <ul class="menu">
+<li class="menu-item active" data-section="dashboard">
+    <i class="fa-solid fa-house"></i>
+    <span>Dashboard</span>
+</li>
+
+<li class="menu-item" data-section="tasks">
+    <i class="fa-solid fa-list-check"></i>
+    <span>Tasks</span>
+</li>
+
+<li class="menu-item" data-section="calendar">
+    <i class="fa-solid fa-calendar-days"></i>
+    <span>Calendar</span>
+</li>
+
+<li class="menu-item" data-section="reminders">
+    <i class="fa-solid fa-bell"></i>
+    <span>Reminders</span>
+</li>
+
+<li class="menu-item" data-section="analytics">
+    <i class="fa-solid fa-chart-pie"></i>
+    <span>Analytics</span>
+</li>
+
+<li class="menu-item" data-section="settings">
+    <i class="fa-solid fa-gear"></i>
+    <span>Settings</span>
+</li>
+
+            </ul>
+
+        </div>
+
+        <div class="sidebar-footer">
+
+            <div class="profile-card">
+
+                <div class="avatar">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+                <div>
+
+                    <h4 id="sidebarUserName">
+                        User
+                    </h4>
+
+                    <small id="sidebarUserPhone">
+                        Phone
+                    </small>
+
+                </div>
+
+            </div>
+
+            <button id="logoutBtn" class="logout-btn">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+    <!-- =====================
+         MAIN CONTENT
+    ====================== -->
+
+    <main class="main-content">
+
+        <!-- Topbar -->
+
+        <header class="topbar">
+
+            <div class="left-top">
+
+                <button id="menuBtn">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </button>
+
+                <h2 id="pageTitle">
+                    Dashboard
+                </h2>
+
+            </div>
+
+            <div class="right-top">
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-search"></i>
+
+                    <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search tasks...">
+
+                </div>
+
+                <button id="themeBtn">
+
+                    <i class="fa-solid fa-moon"></i>
+
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- =====================
+             DASHBOARD SECTION
+        ====================== -->
+
+        <section id="dashboardSection" class="app-section active">
+
+            <div class="welcome-card">
+
+                <div>
+
+                    <h1 id="greeting">
+
+                        Good Morning 👋
+
+                    </h1>
+<p id="todayDate"></p>
+
+<p id="liveClock"></p>
+                </div>
+
+                <div class="user-chip">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <span id="welcomeName">
+
+                        User
+
+                    </span>
+
+                </div>
+
+            </div>
+            <!-- =========================
+     QUICK ACTIONS
+========================= -->
+
+<section class="quick-actions">
+
+    <button class="action-card" id="newTaskBtn">
+
+        <i class="fa-solid fa-plus"></i>
+
+        <span>New Task</span>
+
+    </button>
+
+    <button class="action-card" data-section="calendar">
+
+        <i class="fa-solid fa-calendar-days"></i>
+
+        <span>Calendar</span>
+
+    </button>
+
+    <button class="action-card" data-section="reminders">
+
+        <i class="fa-solid fa-bell"></i>
+
+        <span>Reminders</span>
+
+    </button>
+
+    <button class="action-card" data-section="analytics">
+
+        <i class="fa-solid fa-chart-pie"></i>
+
+        <span>Analytics</span>
+
+    </button>
+
+</section>
+
+
+<!-- =========================
+     DASHBOARD STATISTICS
+========================= -->
+
+<section class="stats-grid">
+
+    <div class="stat-card clickable"
+         id="totalCard"
+         data-filter="all">
+
+        <div>
+
+            <h4>Total Tasks</h4>
+
+            <h2 id="totalTasks">
+                0
+            </h2>
+
+        </div>
+
+        <i class="fa-solid fa-list-check stat-icon"></i>
+
+    </div>
+
+
+    <div class="stat-card clickable"
+         id="pendingCard"
+         data-filter="pending">
+
+        <div>
+
+            <h4>Pending</h4>
+
+            <h2 id="pendingTasks">
+                0
+            </h2>
+
+        </div>
+
+        <i class="fa-solid fa-hourglass-half stat-icon"></i>
+
+    </div>
+
+
+    <div class="stat-card clickable"
+         id="completedCard"
+         data-filter="completed">
+
+        <div>
+
+            <h4>Completed</h4>
+
+            <h2 id="completedTasks">
+                0
+            </h2>
+
+        </div>
+
+        <i class="fa-solid fa-circle-check stat-icon"></i>
+
+    </div>
+
+
+    <div class="stat-card clickable"
+         id="overdueCard"
+         data-filter="overdue">
+
+        <div>
+
+            <h4>Overdue</h4>
+
+            <h2 id="overdueTasks">
+                0
+            </h2>
+
+        </div>
+
+        <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     TODAY'S TASKS
+========================= -->
+
+<section class="today-section">
+
+    <div class="section-header">
+
+        <h2>Today's Tasks</h2>
+
+        <button id="viewAllTasks">
+
+            View All
+
+        </button>
+
+    </div>
+
+    <div id="todayTasksContainer"
+         class="task-preview-container">
+
+        <!-- JavaScript will insert today's tasks here -->
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            <h3>No tasks for today</h3>
+
+            <p>
+
+                Click "New Task" to create your first task.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+</section>
+
+
+<!-- Floating Add Button -->
+
+<button id="floatingTaskBtn"
+        class="floating-btn">
+
+    <i class="fa-solid fa-plus"></i>
+
+</button>
+</section>
+<!-- =========================
+     TASKS SECTION
+========================= -->
+
+<section id="tasksSection" class="app-section hidden">
+
+    <div class="section-header">
+
+        <h2>My Tasks</h2>
+
+        <button class="primary-btn" id="addTaskPageBtn">
+
+            <i class="fa-solid fa-plus"></i>
+
+            Add Task
+
+        </button>
+
+    </div>
+
+    <div id="taskList">
+
+        <!-- Tasks loaded by JavaScript -->
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CALENDAR SECTION
+========================= -->
+
+<section id="calendarSection" class="app-section hidden">
+
+    <div class="section-header">
+
+        <h2>Calendar</h2>
+
+    </div>
+
+    <div id="calendarContainer">
+
+        <!-- Calendar will be generated by JavaScript -->
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     REMINDERS SECTION
+========================= -->
+
+<section id="remindersSection" class="app-section hidden">
+
+    <div class="section-header">
+
+        <h2>Reminders</h2>
+
+    </div>
+
+    <div id="remindersContainer" class="reminders-container">
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ANALYTICS SECTION
+========================= -->
+
+<section id="analyticsSection" class="app-section hidden">
+
+    <div class="section-header">
+
+        <h2>Analytics</h2>
+
+    </div>
+
+    <div class="analytics-grid">
+
+        <div class="chart-card">
+
+            <h3>Task Status</h3>
+
+            <canvas id="statusPieChart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <h3>Weekly Productivity</h3>
+
+            <canvas id="weeklyBarChart"></canvas>
+
+        </div>
+
+        <div class="chart-card full-width">
+
+            <h3>Task Trend</h3>
+
+            <canvas id="trendLineChart"></canvas>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SETTINGS SECTION
+========================= -->
+
+<section id="settingsSection" class="app-section hidden">
+
+    <div class="section-header">
+
+        <h2>Settings</h2>
+
+    </div>
+
+    <div class="settings-card">
+
+        <button id="toggleThemeBtn">
+
+            🌙 Toggle Dark Mode
+
+        </button>
+
+        <button id="exportTasksBtn">
+
+            📤 Export Tasks
+
+        </button>
+
+        <button id="clearCompletedBtn">
+
+            🗑 Clear Completed Tasks
+
+        </button>
+
+    </div>
+
+</section>
+<div class="modal hidden" id="taskModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+
+                Add Task
+
+            </h2>
+
+            <button id="closeModal">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+<form id="taskForm" class="task-form">
+
+    <div class="form-group full-width">
+        <label>Task Title</label>
+        <input
+            type="text"
+            id="taskTitle"
+            placeholder="Enter task title"
+            required>
+    </div>
+
+    <div class="form-group full-width">
+        <label>Description</label>
+        <textarea
+            id="taskDescription"
+            rows="3"
+            placeholder="Enter task description"></textarea>
+    </div>
+
+    <div class="form-row">
+
+        <div class="form-group">
+            <label>Category</label>
+            <select id="taskCategory">
+                <option value="Personal">Personal</option>
+                <option value="Work">Work</option>
+                <option value="School">School</option>
+                <option value="Shopping">Shopping</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Priority</label>
+            <select id="taskPriority">
+                <option value="Low">🟢 Low</option>
+                <option value="Medium">🟡 Medium</option>
+                <option value="High">🔴 High</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="form-row">
+
+        <div class="form-group">
+            <label>Due Date</label>
+            <input
+                type="date"
+                id="taskDate"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label>Reminder Time</label>
+            <input
+                type="time"
+                id="taskReminder">
+        </div>
+
+    </div>
+
+    <div class="form-group full-width">
+        <label>Add Reminder Note (Optional)</label>
+        <input
+            type="text"
+            id="taskReminderNote"
+            placeholder="Example: Notify me 30 minutes before meeting">
+    </div>
+
+    <button
+        type="submit"
+        class="primary-btn save-btn">
+
+        <i class="fa-solid fa-floppy-disk"></i>
+        Save Task
+
+    </button>
+
+</form>
+
+    </div>
+
+</div>
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="js/storage.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/reminders.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/settings.js"></script>
+
+</body>
+</html>
