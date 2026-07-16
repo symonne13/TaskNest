@@ -269,14 +269,15 @@ document
     });
 
 });
-const viewAllTasks =
-document.getElementById("viewAllTasks");
 
-viewAllTasks.addEventListener("click",()=>{
 
-    showSection("tasks");
+// ==========================================
+// TASK MODAL
+// ==========================================
 
-});
+const taskModal =
+document.getElementById("taskModal");
+
 const floatingTaskBtn =
 document.getElementById("floatingTaskBtn");
 
@@ -286,38 +287,64 @@ document.getElementById("addTaskPageBtn");
 const newTaskBtn =
 document.getElementById("newTaskBtn");
 
+
 function openTaskModal(){
 
-    document
-        .getElementById("taskModal")
-        .classList.remove("hidden");
+    if(taskModal){
+
+        taskModal.classList.remove("hidden");
+
+    }
 
 }
 
-floatingTaskBtn.addEventListener(
-    "click",
-    openTaskModal
-);
 
-addTaskPageBtn.addEventListener(
-    "click",
-    openTaskModal
-);
+if(floatingTaskBtn){
 
-newTaskBtn.addEventListener(
-    "click",
-    openTaskModal
-);
+    floatingTaskBtn.addEventListener(
+        "click",
+        openTaskModal
+    );
+
+}
+
+
+if(addTaskPageBtn){
+
+    addTaskPageBtn.addEventListener(
+        "click",
+        openTaskModal
+    );
+
+}
+
+
+if(newTaskBtn){
+
+    newTaskBtn.addEventListener(
+        "click",
+        openTaskModal
+    );
+
+}
+
+
+
 const closeModal =
 document.getElementById("closeModal");
 
-closeModal.addEventListener("click",()=>{
 
-    document
-        .getElementById("taskModal")
-        .classList.add("hidden");
+if(closeModal){
+
+closeModal.addEventListener(
+"click",
+()=>{
+
+taskModal.classList.add("hidden");
 
 });
+
+}
 const modal =
 document.getElementById("taskModal");
 

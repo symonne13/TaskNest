@@ -8,11 +8,10 @@ const taskList = document.getElementById("taskList");
 
 const todayTasksContainer =
 document.getElementById("todayTasksContainer");
-
-const taskModal =
+const taskModalElement =
 document.getElementById("taskModal");
 
-const modalTitle =
+const modalTitleElement =
 document.getElementById("modalTitle");
 
 const searchInput =
@@ -93,39 +92,98 @@ const task = {
 }
 function renderTasks(){
 
-    let tasks = getUserTasks();
+    const tasks = getUserTasks();
+
+
+    const pendingTasks = tasks.filter(
+        task => !task.completed
+    );
+
+
+    const completedTasks = tasks.filter(
+        task => task.completed
+    );
+
 
     taskList.innerHTML = "";
 
-    if(tasks.length===0){
 
-        taskList.innerHTML=`
+    // Pending Section
 
-            <div class="empty-state">
+    const pendingTitle = document.createElement("h2");
 
-                <i class="fa-solid fa-box-open"></i>
+    pendingTitle.textContent = "⏳ Pending Tasks";
 
-                <h3>No Tasks Yet</h3>
+    taskList.appendChild(pendingTitle);
 
-                <p>Create your first task.</p>
 
-            </div>
+
+    if(pendingTasks.length === 0){
+
+        taskList.innerHTML += `
+
+        <div class="empty-state">
+
+            <h3>No pending tasks</h3>
+
+        </div>
 
         `;
 
-        return;
+    }else{
+
+
+        pendingTasks.forEach(task=>{
+
+            taskList.appendChild(
+                createTaskCard(task)
+            );
+
+        });
+
 
     }
 
-    tasks.forEach(task=>{
 
-        taskList.appendChild(
 
-            createTaskCard(task)
+    // Completed Section
 
-        );
+    const completedTitle = document.createElement("h2");
 
-    });
+    completedTitle.textContent = "✅ Completed Tasks";
+
+    completedTitle.style.marginTop="30px";
+
+
+    taskList.appendChild(completedTitle);
+
+
+
+    if(completedTasks.length === 0){
+
+        taskList.innerHTML += `
+
+        <div class="empty-state">
+
+            <h3>No completed tasks</h3>
+
+        </div>
+
+        `;
+
+    }else{
+
+
+        completedTasks.forEach(task=>{
+
+            taskList.appendChild(
+                createTaskCard(task)
+            );
+
+        });
+
+    }
+
 
 }
 function createTaskCard(task){
@@ -218,15 +276,13 @@ taskList.addEventListener("click",(e)=>{
 
     switch(action){
 
-        case "complete":
+      case "complete":
 
-            completeTask(taskId);
+    console.log("COMPLETE BUTTON CLICKED");
 
-            renderTasks();
+    completeTask(taskId);
 
-            updateDashboard();
-
-            break;
+    break;
 
         case "edit":
 
@@ -296,27 +352,60 @@ function editTask(taskId){
 }
 function completeTask(taskId){
 
-    const tasks = getAllTasks();
+    let tasks = getAllTasks();
 
-    const task = tasks.find(t => t.id === taskId);
 
-    if(!task) return;
+    const task = tasks.find(
+        task => task.id === taskId
+    );
 
-    // Toggle completion
+
+    if(!task){
+
+        console.log("Task not found:", taskId);
+
+        return;
+
+    }
+
+
     task.completed = !task.completed;
+
 
     task.completedAt = task.completed
         ? new Date().toISOString()
         : null;
+if(task.completed){
 
-    // Save updated task
-    updateTask(task);
+    alert(`🎉 Task "${task.title}" completed successfully!`);
 
-    // Refresh UI
-    renderTasks();
-    updateDashboard();
+}else{
+
+    alert(`Task "${task.title}" moved back to pending.`);
 
 }
+
+    task.updatedAt =
+    new Date().toISOString();
+
+
+
+    saveAllTasks(tasks);
+
+
+    console.log(
+        "Task updated:",
+        task
+    );
+
+
+    renderTasks();
+
+    updateDashboard();
+
+
+}
+
 function updateDashboard(){
 
     const stats = getTaskStatistics();

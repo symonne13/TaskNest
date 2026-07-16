@@ -42,7 +42,7 @@ if (signupForm) {
         }
 
         // Get users
-        let users = JSON.parse(localStorage.getItem("tasknestUsers")) || [];
+        let users = JSON.parse(localStorage.getItem("tasknest_users")) || [];
 
         // Check duplicate phone number
         const exists = users.find(user => user.phone === phone);
@@ -54,13 +54,20 @@ if (signupForm) {
 
         // Save user
         users.push({
-            name,
-            email,
-            phone,
-            password
-        });
 
-        localStorage.setItem("tasknestUsers", JSON.stringify(users));
+    id: crypto.randomUUID(),
+
+    name,
+
+    email,
+
+    phone,
+
+    password
+
+});
+
+        localStorage.setItem("tasknest_users", JSON.stringify(users));
 
         alert("🎉 Account created successfully!");
 

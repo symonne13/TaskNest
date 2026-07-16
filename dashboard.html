@@ -322,42 +322,6 @@
      TODAY'S TASKS
 ========================= -->
 
-<section class="today-section">
-
-    <div class="section-header">
-
-        <h2>Today's Tasks</h2>
-
-        <button id="viewAllTasks">
-
-            View All
-
-        </button>
-
-    </div>
-
-    <div id="todayTasksContainer"
-         class="task-preview-container">
-
-        <!-- JavaScript will insert today's tasks here -->
-
-        <div class="empty-state">
-
-            <i class="fa-solid fa-calendar-check"></i>
-
-            <h3>No tasks for today</h3>
-
-            <p>
-
-                Click "New Task" to create your first task.
-
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
 
 </section>
 
@@ -470,13 +434,7 @@
 
         </div>
 
-        <div class="chart-card full-width">
-
-            <h3>Task Trend</h3>
-
-            <canvas id="trendLineChart"></canvas>
-
-        </div>
+    
 
     </div>
 
@@ -486,7 +444,6 @@
 <!-- =========================
      SETTINGS SECTION
 ========================= -->
-
 <section id="settingsSection" class="app-section hidden">
 
     <div class="section-header">
@@ -495,29 +452,148 @@
 
     </div>
 
-    <div class="settings-card">
+    <div class="settings-grid">
 
-        <button id="toggleThemeBtn">
+        <!-- Profile -->
 
-            🌙 Toggle Dark Mode
+        <div class="settings-card">
 
-        </button>
+            <h3>
 
-        <button id="exportTasksBtn">
+                <i class="fa-solid fa-user"></i>
 
-            📤 Export Tasks
+                Profile
 
-        </button>
+            </h3>
 
-        <button id="clearCompletedBtn">
+            <p><strong>Name:</strong> <span id="settingsUserName">User</span></p>
 
-            🗑 Clear Completed Tasks
+            <p><strong>Email:</strong> <span id="settingsUserEmail">Not Set</span></p>
 
-        </button>
+            <p><strong>Phone:</strong> <span id="settingsUserPhone">Not Set</span></p>
+
+            <button id="editProfileBtn" class="settings-btn">
+
+                Edit Profile
+
+            </button>
+
+            <button id="changePasswordBtn" class="settings-btn">
+
+                Change Password
+
+            </button>
+
+        </div>
+
+        <!-- Appearance -->
+
+        <div class="settings-card">
+
+            <h3>
+
+                <i class="fa-solid fa-palette"></i>
+
+                Appearance
+
+            </h3>
+
+            <button id="toggleThemeBtn" class="settings-btn">
+
+                🌙 Dark Mode
+
+            </button>
+
+        </div>
+
+        <!-- Notifications -->
+
+        <div class="settings-card">
+
+            <h3>
+
+                <i class="fa-solid fa-bell"></i>
+
+                Notifications
+
+            </h3>
+
+            <label>
+
+                <input type="checkbox" id="enableReminders">
+
+                Enable Task Reminders
+
+            </label>
+
+            <br><br>
+
+            <label>
+
+                <input type="checkbox" id="enableBrowserNotifications">
+
+                Browser Notifications
+
+            </label>
+
+        </div>
+
+        <!-- Data -->
+
+        <div class="settings-card">
+
+            <h3>
+
+                <i class="fa-solid fa-database"></i>
+
+                Data
+
+            </h3>
+
+            <button id="exportTasksBtn" class="settings-btn">
+
+                Export Tasks
+
+            </button>
+
+            <button id="importTasksBtn" class="settings-btn">
+
+                Import Tasks
+
+            </button>
+
+            <button id="clearCompletedBtn" class="settings-btn danger">
+
+                Clear Completed
+
+            </button>
+
+        </div>
+
+        <!-- About -->
+
+        <div class="settings-card">
+
+            <h3>
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                About
+
+            </h3>
+
+            <p><strong>TaskNest</strong></p>
+
+            <p>Version 1.0</p>
+
+            <p>Your Smart Productivity Companion.</p>
+
+        </div>
 
     </div>
 
 </section>
+
 <div class="modal hidden" id="taskModal">
 
     <div class="modal-content">
@@ -620,6 +696,105 @@
     </div>
 
 </div>
+<div id="profileModal" class="modal hidden">
+
+    <div class="modal-content small-modal">
+
+        <div class="modal-header">
+
+            <h2>Edit Profile</h2>
+
+            <button type="button" id="closeProfileModal">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+        <form id="profileForm">
+
+            <label>Full Name</label>
+            <input type="text" id="profileName" required>
+
+            <label>Email</label>
+            <input type="email" id="profileEmail" required>
+
+            <label>Phone Number</label>
+            <input type="tel" id="profilePhone" required>
+
+            <button type="submit" class="primary-btn">
+
+                Save Changes
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+<!-- ===========================
+     CHANGE PASSWORD MODAL
+============================ -->
+
+<div id="passwordModal" class="modal hidden">
+
+    <div class="modal-content small-modal">
+
+        <div class="modal-header">
+
+            <h2>Change Password</h2>
+
+            <button type="button" id="closePasswordModal">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+        <form id="passwordForm">
+
+            <label>Current Password</label>
+
+            <input
+                type="password"
+                id="currentPassword"
+                required>
+
+            <label>New Password</label>
+
+            <input
+                type="password"
+                id="newPassword"
+                required>
+
+            <label>Confirm Password</label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                required>
+
+            <button
+                type="submit"
+                class="primary-btn">
+
+                Change Password
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+<input
+    type="file"
+    id="importFile"
+    accept=".json"
+    hidden>
     </main>
 
 </div>
@@ -627,12 +802,23 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script src="js/storage.js"></script>
+<script src="js/auth.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/tasks.js"></script>
 <script src="js/calendar.js"></script>
 <script src="js/reminders.js"></script>
 <script src="js/analytics.js"></script>
 <script src="js/settings.js"></script>
+<script>
+if("serviceWorker" in navigator){
 
+window.addEventListener("load",()=>{
+
+navigator.serviceWorker.register("service-worker.js");
+
+});
+
+}
+</script>
 </body>
 </html>

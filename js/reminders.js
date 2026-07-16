@@ -1,18 +1,134 @@
-// =================================
-// TaskNest Reminders
-// =================================
+// ==============================
+// TASKNEST REMINDERS
+// ==============================
 
 
-function renderReminders(){
-
-    const container =
-    document.getElementById(
-        "remindersContainer"
-    );
+document.addEventListener(
+"DOMContentLoaded",
+loadReminders
+);
 
 
-    if(!container) return;
 
+function loadReminders(){
+
+
+const container =
+document.getElementById("remindersContainer");
+
+
+if(!container) return;
+
+
+
+const tasks =
+getUserTasks();
+
+
+
+const reminders =
+tasks.filter(task =>
+
+    task.reminderTime
+
+);
+
+
+
+container.innerHTML="";
+
+
+
+if(reminders.length===0){
+
+
+container.innerHTML=`
+
+<div class="empty-state">
+
+<i class="fa-solid fa-bell-slash"></i>
+
+<h3>No reminders</h3>
+
+<p>Add reminder times when creating tasks.</p>
+
+</div>
+
+`;
+
+
+return;
+
+
+}
+
+
+
+reminders.forEach(task=>{
+
+
+const card =
+document.createElement("div");
+
+
+card.className="reminder-card";
+
+
+
+card.innerHTML=`
+
+<h3>
+
+<i class="fa-solid fa-bell"></i>
+
+${task.title}
+
+</h3>
+
+
+<p>
+
+⏰ ${task.reminderTime}
+
+</p>
+
+
+<p>
+
+${task.reminderNote || "No reminder note"}
+
+</p>
+
+
+<span>
+
+${task.completed ? "✅ Completed":"⏳ Pending"}
+
+</span>
+
+
+`;
+
+
+
+container.appendChild(card);
+
+
+
+});
+
+
+
+}
+// ==============================
+// AUTOMATIC REMINDER CHECKER
+// ==============================
+
+setInterval(checkReminders, 60000);
+
+
+
+function checkReminders(){
 
     const tasks = getUserTasks();
 
@@ -20,116 +136,22 @@ function renderReminders(){
     const now = new Date();
 
 
-    const reminders = tasks.filter(task=>{
+    const currentTime =
+    now.toTimeString().slice(0,5);
 
 
-        if(!task.reminder){
-            return false;
+
+    tasks.forEach(task=>{
+
+
+        if(
+            task.reminderTime === currentTime &&
+            !task.completed
+        ){
+
+            showReminderNotification(task);
+
         }
-
-
-        const reminderDate =
-        new Date(
-            `${task.dueDate}T${task.reminder}`
-        );
-
-
-        return reminderDate >= now;
-
-
-    });
-
-
-
-    container.innerHTML="";
-
-
-
-    if(reminders.length === 0){
-
-
-        container.innerHTML = `
-
-        <div class="empty-state">
-
-            <i class="fa-solid fa-bell-slash"></i>
-
-            <h3>No reminders</h3>
-
-            <p>
-            You have no upcoming reminders.
-            </p>
-
-        </div>
-
-        `;
-
-
-        return;
-
-    }
-
-
-
-    reminders.forEach(task=>{
-
-
-        const card =
-        document.createElement("div");
-
-
-        card.className =
-        "reminder-card";
-
-
-
-        card.innerHTML = `
-
-
-        <div class="reminder-icon">
-
-            <i class="fa-solid fa-bell"></i>
-
-        </div>
-
-
-        <div class="reminder-info">
-
-
-            <h3>
-            ${task.title}
-            </h3>
-
-
-            <p>
-
-            📅 ${task.dueDate}
-
-            </p>
-
-
-            <p>
-
-            ⏰ ${task.reminder}
-
-            </p>
-
-
-            <span>
-
-            ${task.priority}
-
-            </span>
-
-
-        </div>
-
-
-        `;
-
-
-
-        container.appendChild(card);
 
 
     });
@@ -139,7 +161,42 @@ function renderReminders(){
 
 
 
+
+function showReminderNotification(task){
+
+
+    if(
+        Notification.permission === "granted"
+    ){
+
+
+        new Notification(
+            "🔔 TaskNest Reminder",
+            {
+
+                body:
+                `${task.title} - ${task.reminderNote || "Task reminder"}`
+
+            }
+
+        );
+
+
+    }
+
+}
 document.addEventListener(
 "DOMContentLoaded",
-renderReminders
-);
+()=>{
+
+
+if(
+Notification.permission !== "granted"
+){
+
+Notification.requestPermission();
+
+}
+
+
+});
