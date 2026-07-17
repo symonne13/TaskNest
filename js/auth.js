@@ -1,4 +1,4 @@
-alert("AUTH VERSION 2.0");
+
 
 // ======================================
 // TASKNEST AUTHENTICATION
@@ -91,17 +91,9 @@ if (loginForm) {
 
         const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
 
-        alert("Users:\n" + JSON.stringify(users));
-
-        alert("Phone entered: " + phone);
-
-        alert("Password entered: " + password);
-
         const user = users.find(
             u => u.phone === phone && u.password === password
         );
-
-        alert("Matched User:\n" + JSON.stringify(user));
 
         if (!user) {
             alert("Invalid phone number or password.");
