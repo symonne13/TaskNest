@@ -1,3 +1,5 @@
+alert("AUTH VERSION 2.0");
+
 // ======================================
 // TASKNEST AUTHENTICATION
 // ======================================
@@ -23,10 +25,21 @@ if (signupForm) {
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
 
-        console.log("Signup started");
-
+        // Validation
         if (!name || !email || !phone || !password || !confirmPassword) {
             alert("Please fill in all fields.");
+            return;
+        }
+
+        const phoneRegex = /^(07|01)\d{8}$/;
+
+        if (!phoneRegex.test(phone)) {
+            alert("Enter a valid Kenyan phone number.");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters.");
             return;
         }
 
@@ -37,7 +50,12 @@ if (signupForm) {
 
         let users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
 
-        console.log("Users before save:", users);
+        const exists = users.find(user => user.phone === phone);
+
+        if (exists) {
+            alert("An account with this phone number already exists.");
+            return;
+        }
 
         users.push({
             id: crypto.randomUUID(),
@@ -47,22 +65,15 @@ if (signupForm) {
             password
         });
 
-        localStorage.setItem(
-            USERS_KEY,
-            JSON.stringify(users)
-        );
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
 
-        console.log("Users after save:", users);
-        console.log("Stored value:", localStorage.getItem(USERS_KEY));
-
-        alert("Signup successful");
+        alert("🎉 Account created successfully!");
 
         window.location.href = "login.html";
 
     });
 
 }
-
 // ======================
 // LOGIN
 // ======================
@@ -80,25 +91,24 @@ if (loginForm) {
 
         const users = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
 
-        console.log("Users:", users);
-        console.log("Phone:", phone);
-        console.log("Password:", password);
+        alert("Users:\n" + JSON.stringify(users));
+
+        alert("Phone entered: " + phone);
+
+        alert("Password entered: " + password);
 
         const user = users.find(
             u => u.phone === phone && u.password === password
         );
 
-        console.log("Matched:", user);
+        alert("Matched User:\n" + JSON.stringify(user));
 
         if (!user) {
             alert("Invalid phone number or password.");
             return;
         }
 
-        localStorage.setItem(
-            CURRENT_USER_KEY,
-            JSON.stringify(user)
-        );
+        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
 
         window.location.href = "dashboard.html";
 
